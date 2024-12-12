@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>tramos</h1>
+
+    <p>Ingrese el nombre del tramo </p>
+    <input type="text" id="nombre">
+
+    <p>Ingrese la distancia </p>
+    <input type="number" id="distancia"> km
+
+    <br><br><button id="boton">Agregar</button>
+
+    <ul id="listaVisible"></ul>
+    <span id="resultado"></span>
+</body>
+</html>
+
+<script>
+    const Tramos =[]
+    const boton = document.getElementById('boton')
+
+    boton.onclick = () =>{
+        const Nombre = document.getElementById("nombre").value  
+        const Distancia = document.getElementById("distancia").value
+        if(Nombre === ""){
+            alert("ingrese un nombre al tramo")
+            return;
+        }else if (Distancia < 0){
+            alert("ingrese distancia en positivo")
+        }else{
+            const tramo = {Nombre : Nombre , Distancia : Distancia}
+            Tramos.push(tramo)
+            document.getElementById('nombre').value = ""
+            document.getElementById('distancia').value = ""
+            document.getElementById("listaVisible").textContent = ""
+        
+
+        }
+
+
+       Tramos.forEach(element => {
+        const li = document.createElement("li")
+        li.textContent =  `${element.Nombre} con ${element.Distancia}KM `
+        document.getElementById("listaVisible").appendChild(li)
+       });
+
+       const Calculos = () =>{
+        if(Tramos.length > 0){
+            const suma = Tramos.reduce(((acc , tramo) => acc + parseFloat(tramo.Distancia)),0)
+            const Promedio = suma / Tramos.length
+            const MenorTramo =Tramos.reduce((min , tramo)=>tramo.Distancia < min.Distancia ? tramo : min , Tramos[0])
+            const MayorTramo= Tramos.reduce((max , tramo)=> tramo.Distancia > max.Distancia ? tramo : max,Tramos[0])
+
+            document.getElementById("resultado").textContent = `El promedio de los tramos es (${Promedio}) Y el Mayor tramo es (${MayorTramo.Nombre}) Y el menor Tramo es (${MenorTramo.Nombre})`
+        }
+       }
+       Calculos()
+    }
+</script>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Ingresa los tramos</h1>
+    <p>Nombre del Tramo</p>
+    <input type="text" id="nombre"><br>
+    
+    <p>Distancia Recorrida (en km)</p>
+    <input type="number" id="distancia"><br> 
+
+    <br> <button type="button" id="boton" onclick="calcular()" >Agregar</button>
+    <ul id="lista"></ul>
+
+    <p id="resultado">Mensaje</p>
+    
+    <script>
+        const Tramos = []
+        const boton = document.getElementById("boton")
+    
+        function calcular(){
+            const Nombre = document.getElementById("nombre").value
+            const Distancia = parseFloat(document.getElementById("distancia").value)
+            if (!Nombre){ 
+                alert("Ingrese el Nombre del tramo")
+                return
+            } else if (Distancia < 0){
+                alert("Ingrese numeros positivos")
+                return
+            } else if (!Distancia){
+                alert("Ingrese kilometros recorridos")
+                return
+            } else {
+                const tramo = { nombres : Nombre, distancias: Distancia}
+                Tramos.push(tramo)
+                document.getElementById("nombre").value =""
+                document.getElementById("distancia").value =""
+                document.getElementById("lista").textContent =""
+            }
+
+            Tramos.forEach((e) => {
+                const li = document.createElement("li")
+                li.textContent = `${e.nombres} con ${e.distancias}km` 
+                document.getElementById("lista").appendChild(li)
+            })
+
+            if (Tramos.length  > 0){
+                const suma = Tramos.reduce((acumulador, tramo)=> acumulador + parseInt(tramo.distancias),0)
+                const promedio = suma / Tramos.length
+                const menor = Tramos.reduce((min, tramo)=> tramo.distancias < min.distancias ? tramo : min, Tramos[0])
+                const mayor = Tramos.reduce((max, tramo)=> tramo.distancias > max.distancias ? tramo : max, Tramos[0])
+
+                console.log(suma)
+                console.log(menor)
+                document.getElementById("resultado").textContent = `Promedio: ${promedio}km | Distancia mas Corta: ${menor.nombres} - ${menor.distancias}km | Distancia mas Larga: ${mayor.nombres} - ${mayor.distancias}km`
+            }
+        }
+    </script>
+</body>
+</html>
